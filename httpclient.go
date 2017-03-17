@@ -67,11 +67,13 @@ func (c *HttpClient) httpRequest(url string, requestType string, headers map[str
         return "", err
     }
     
-    for key, value := range headers {
-        c.Headers[key] = value
+    // Default Headers
+    for key, value := range c.Headers {
+        req.Header.Set(key, value)
     }
 
-    for key, value := range c.Headers {
+    // Custom Headers
+    for key, value := range headers {
         req.Header.Set(key, value)
     }
 
