@@ -2,7 +2,7 @@
 package httpclient
 
 import (
-    "fmt"
+    "log"
     "net/http"
     "io/ioutil"
     "bytes"
@@ -24,16 +24,16 @@ func NewHttpClient(baseUrl string, headers map[string]string, printLogs bool) *H
 }
 
 func (c *HttpClient) logSendRequest(url string, requestType string, body string) {
-    fmt.Println("Sending [", requestType, "] request to Server (", url, "):")
-    fmt.Println("Body:")
-    fmt.Println(body)
+    log.Println("Sending [", requestType, "] request to Server (", url, "):")
+    log.Println("Body:")
+    log.Println(body)
 }
 
 func (c *HttpClient) logResponse(statusCode string, response string) {
-    fmt.Println("Received response from Server (", c.BaseUrl, "):")
-    fmt.Println("Status: ", statusCode)
-    fmt.Println("Response:")
-    fmt.Println(response)
+    log.Println("Received response from Server (", c.BaseUrl, "):")
+    log.Println("Status: ", statusCode)
+    log.Println("Response:")
+    log.Println(response)
 }
 
 func genParamString(paramMap map[string]string) string {
@@ -91,7 +91,7 @@ func (c *HttpClient) httpRequest(url string, requestType string, headers map[str
     response, err := ioutil.ReadAll(resp.Body)
     responseString := string(response)
     if err != nil {
-        fmt.Println("ERROR reading response for URL: ", url)
+        log.Println("ERROR reading response for URL: ", url)
         return "", err
     }
 
@@ -105,7 +105,7 @@ func (c *HttpClient) Get(url string, queryParamsMap map[string]string, headers m
     urlString := url + genParamString(queryParamsMap)
     resp, err := c.httpRequest(urlString, "GET", headers, "")
     if err != nil {
-        fmt.Println("Http GET Error for URL: ", urlString)
+        log.Println("Http GET Error for URL: ", urlString)
         return "", err
     }
     return resp, nil
@@ -115,7 +115,7 @@ func (c *HttpClient) Put(url string, queryParamsMap map[string]string, headers m
     urlString := url + genParamString(queryParamsMap)
     resp, err := c.httpRequest(urlString, "PUT", headers, body)
     if err != nil {
-        fmt.Println("Http PUT Error for URL: ", urlString, )
+        log.Println("Http PUT Error for URL: ", urlString, )
         return "", err
     }
     return resp, nil
@@ -125,7 +125,7 @@ func (c *HttpClient) Post(url string, queryParamsMap map[string]string, headers 
     urlString := url + genParamString(queryParamsMap)
     resp, err := c.httpRequest(urlString, "POST", headers, body)
     if err != nil {
-        fmt.Println("Http POST Error for URL: ", urlString)
+        log.Println("Http POST Error for URL: ", urlString)
         return "", err
     }
     return resp, nil
@@ -135,7 +135,7 @@ func (c *HttpClient) Delete(url string, queryParamsMap map[string]string, header
     urlString := url + genParamString(queryParamsMap)
     resp, err := c.httpRequest(urlString, "DELETE", headers, body)
     if err != nil {
-        fmt.Println("Http DELETE Error for URL: ", urlString)
+        log.Println("Http DELETE Error for URL: ", urlString)
         return "", err
     }
     return resp, nil
